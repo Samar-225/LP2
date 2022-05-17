@@ -1,10 +1,9 @@
 /* C++ program to solve N Queen Problem using Branch
 and Bound */
 #include <iostream>
-# include <string.h>
+#include <string.h>
 using namespace std;
 #define N 5
-
 
 /* A utility function to print solution */
 void printSolution(int board[N][N])
@@ -12,7 +11,7 @@ void printSolution(int board[N][N])
 	for (int i = 0; i < N; i++)
 	{
 		for (int j = 0; j < N; j++)
-			cout << " "<< board[i][j];
+			cout << " " << board[i][j];
 		cout << "\n";
 	}
 }
@@ -21,12 +20,12 @@ void printSolution(int board[N][N])
 be placed on board[row][col] */
 bool isSafe(int row, int col, int slashCode[N][N],
 			int backslashCode[N][N], bool rowLookup[],
-	bool slashCodeLookup[], bool backslashCodeLookup[] )
+			bool slashCodeLookup[], bool backslashCodeLookup[])
 {
 	if (slashCodeLookup[slashCode[row][col]] ||
 		backslashCodeLookup[backslashCode[row][col]] ||
 		rowLookup[row])
-	return false;
+		return false;
 
 	return true;
 }
@@ -34,10 +33,10 @@ bool isSafe(int row, int col, int slashCode[N][N],
 /* A recursive utility function
 to solve N Queen problem */
 bool solveNQueensUtil(int board[N][N], int col,
-	int slashCode[N][N], int backslashCode[N][N],
-								bool rowLookup[N],
-							bool slashCodeLookup[],
-						bool backslashCodeLookup[] )
+					  int slashCode[N][N], int backslashCode[N][N],
+					  bool rowLookup[N],
+					  bool slashCodeLookup[],
+					  bool backslashCodeLookup[])
 {
 	/* base case: If all queens are placed
 	then return true */
@@ -50,9 +49,9 @@ bool solveNQueensUtil(int board[N][N], int col,
 	{
 		/* Check if queen can be placed on
 		board[i][col] */
-		if ( isSafe(i, col, slashCode,
-					backslashCode, rowLookup,
-		slashCodeLookup, backslashCodeLookup) )
+		if (isSafe(i, col, slashCode,
+				   backslashCode, rowLookup,
+				   slashCodeLookup, backslashCodeLookup))
 		{
 			/* Place this queen in board[i][col] */
 			board[i][col] = 1;
@@ -61,9 +60,9 @@ bool solveNQueensUtil(int board[N][N], int col,
 			backslashCodeLookup[backslashCode[i][col]] = true;
 
 			/* recur to place rest of the queens */
-			if ( solveNQueensUtil(board, col + 1,
-								slashCode, backslashCode,
-			rowLookup, slashCodeLookup, backslashCodeLookup) )
+			if (solveNQueensUtil(board, col + 1,
+								 slashCode, backslashCode,
+								 rowLookup, slashCodeLookup, backslashCodeLookup))
 				return true;
 
 			/* If placing queen in board[i][col]
@@ -102,22 +101,23 @@ bool solveNQueens()
 	// arrays to tell us which rows are occupied
 	bool rowLookup[N] = {false};
 
-	//keep two arrays to tell us
-	// which diagonals are occupied
-	bool slashCodeLookup[2*N - 1] = {false};
-	bool backslashCodeLookup[2*N - 1] = {false};
+	// keep two arrays to tell us
+	//  which diagonals are occupied
+	bool slashCodeLookup[2 * N - 1] = {false};
+	bool backslashCodeLookup[2 * N - 1] = {false};
 
 	// initialize helper matrices
 	for (int r = 0; r < N; r++)
-		for (int c = 0; c < N; c++) {
-		slashCode[r][c] = r + c,
+		for (int c = 0; c < N; c++)
+		{
+			slashCode[r][c] = r + c,
 			backslashCode[r][c] = r - c + 7;
 		}
 
 	if (solveNQueensUtil(board, 0,
-						slashCode, backslashCode,
-	rowLookup, slashCodeLookup, backslashCodeLookup) ==
-												false )
+						 slashCode, backslashCode,
+						 rowLookup, slashCodeLookup, backslashCodeLookup) ==
+		false)
 	{
 		cout << "Solution does not exist";
 		return false;
@@ -126,7 +126,7 @@ bool solveNQueens()
 	// solution found
 	printSolution(board);
 	return true;
-}z
+}
 int main()
 {
 	solveNQueens();

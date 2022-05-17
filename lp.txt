@@ -1,0 +1,1257 @@
+/*  11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+Implement depth first search algorithm and Breadth First Search algorithm, 
+Use an undirected graph and develop a recursive algorithm for searching 
+all the vertices of a graph or tree data structure
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Graph
+{
+private: 
+    int v; //no of vertices
+    int** p; //matrix representation
+public:
+    Graph()
+    {
+        v=0;
+        p=NULL;
+    }
+
+    Graph(int n)
+    {
+        v=n; 
+        p = new int* [v];
+        for (int i=0; i<v; i++) //initialising the matrix
+        {
+            p[i]=new int[v];
+        }
+        for(int i=0;i<v;i++)
+        {
+            for(int j=0;j<v;j++)
+            {
+                p[i][j]=0;
+                p[j][i]=0;
+            }    
+        }
+    }
+
+    void setGraph() //setting the graph
+    {
+        char x;
+        for(int i=0;i<v;i++)
+        {
+            for(int j=i;j<v;j++)
+            {
+                cout<<"Are vertices "<<i<<" "<<j<<" connected(y/n)?";
+                cin>>x;
+                if(x=='Y' || x=='y')
+                {
+                    p[i][j]=1;
+                    p[j][i]=1;   
+                }
+            }
+        }
+    }
+
+    void printGraph() //printing the graph
+    {
+        for(int i=0;i<v;i++)
+        {
+            for(int j=0;j<v;j++)
+            {
+                cout<<p[i][j]<<" ";
+            }
+            cout<<endl;
+        }
+    }
+
+    void BFS() //Breadth First Search
+    {
+        bool vis[v];
+        for(int i=0;i<v;i++) vis[i]=false;
+        int vertex;
+        cout<<"Enter the start vertex: ";
+        cin>>vertex;
+        cout<<"\n";
+        queue<int> q;
+
+        q.push(vertex);
+        while(!q.empty())
+        {
+            vertex=q.front();
+            cout<<vertex<<" ";
+            vis[vertex]=true;
+            q.pop();
+            for(int i=0;i<v;i++)
+            {
+                if(p[vertex][i]==1 && !vis[i])
+                {
+                    q.push(i);
+                    vis[i]=true;
+                }
+            }
+        }
+    }
+
+    void DFS() //Depth First Search
+    {
+        int vertex;
+        cout<<"Enter the vertex to start DFS: ";
+        cin>>vertex;
+        bool vis[v];
+        for(int i=0;i<v;i++) vis[i]=false;
+        stack<int> st;
+        st.push(vertex);
+        while(!st.empty())
+        {
+            vertex=st.top();
+            cout<<vertex<<" ";
+            st.pop();
+            vis[vertex]=true;
+            for(int i=0;i<v;i++)
+            {
+                if(p[vertex][i]==1 && !vis[i])
+                {
+                    st.push(i);
+                    vis[i]=true;
+                }
+            }
+        }
+    }
+
+    void searchVertex()
+    {
+        int vertex=0,ver;
+        cout<<"Enter the vertex to be searched: ";
+        cin>>ver;
+        bool vis[v];
+        for(int i=0;i<v;i++) vis[i]=false;
+
+        for(int i=0;i<v;i++)
+        {
+            if(!vis[i])
+            {
+                vertex=i;
+                stack<int> st;
+                st.push(vertex);
+                while(!st.empty())
+                {
+                    vertex=st.top();
+                    st.pop();
+                    if(ver==vertex)
+                    {
+                        cout<<"\nVertex "<<ver<<" is present in the graph\n";
+                        return;
+                    }
+                    vis[vertex]=true;
+                    for(int i=0;i<v;i++)
+                    {
+                        if(p[vertex][i]==1 && !vis[i])
+                        {
+                            st.push(i);
+                            vis[i]=true;
+                        }
+                    }
+                }
+            }
+        }
+        cout<<"\nVertex "<<ver<<" is not present in the graph\n";
+    }
+
+};
+
+int main()
+{
+    bool cont=true;
+    bool isEmpty=true;
+    Graph g=Graph(1);
+    int choice;
+    while(cont)
+    {
+        cout<<"\nEnter your choice: ";
+        cout<<"\n1. Set new graph";
+        cout<<"\n2. Print the graph";
+        cout<<"\n3. Print BFS from a vertex";
+        cout<<"\n4. Print DFS from a vertex";
+        cout<<"\n5. Search for a vertex";
+        cout<<"\n6. Exit\n";
+        cin>>choice;
+        switch(choice)
+        {
+            case 1:
+                int v;
+                cout<<"\nEnter the number of vertices: ";
+                cin>>v;
+                g=Graph(v);
+                g.setGraph();
+                isEmpty=false;
+                break;
+            case 2:
+                if(!isEmpty)
+                {
+                    cout<<"\n\n";
+                    g.printGraph();
+                    cout<<"\n\n";
+                }
+                else cout<<"\nPlease Set the graph first\n";
+                break;
+            case 3:
+                if(!isEmpty)
+                {
+                    cout<<"BFS is ";
+                    g.BFS();
+                    cout<<"\n\n";                }
+                else cout<<"\nPlease Set the graph first\n";
+                break;
+            case 4:
+                if(!isEmpty)
+                {
+                    cout<<"DFS is ";
+                    g.DFS();
+                    cout<<"\n\n";
+                }
+                else cout<<"\nPlease Set the graph first\n";
+                break; 
+            case 5:
+                if(!isEmpty)
+                {
+                    g.searchVertex();
+                }
+                else cout<<"\nPlease Set the graph first\n";
+                break;       
+            case 6:
+                cont=false;
+                break;
+        }
+    }
+    return 0;
+}
+
+
+
+
+_________________________________
+
+
+
+
+////4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+
+/* C++ program to solve N Queen Problem using Branch
+and Bound */
+/* C++ program to solve N Queen Problem using Branch
+and Bound */
+#include <iostream>
+# include <string.h>
+using namespace std;
+#define N 10
+
+/* A utility function to print solution */
+void printSolution(int board[N][N])
+{
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+			cout << " "<< board[i][j];
+		cout << "\n";
+	}
+}
+
+/* A Optimized function to check if a queen can
+be placed on board[row][col] */
+bool isSafe(int row, int col, int slashCode[N][N],
+			int backslashCode[N][N], bool rowLookup[],
+	bool slashCodeLookup[], bool backslashCodeLookup[] )
+{
+	if (slashCodeLookup[slashCode[row][col]] ||
+		backslashCodeLookup[backslashCode[row][col]] ||
+		rowLookup[row])
+	return false;
+
+	return true;
+}
+
+/* A recursive utility function
+to solve N Queen problem */
+bool solveNQueensUtil(int board[N][N], int col,
+	int slashCode[N][N], int backslashCode[N][N],
+								bool rowLookup[N],
+							bool slashCodeLookup[],
+						bool backslashCodeLookup[] )
+{
+	/* base case: If all queens are placed
+	then return true */
+	if (col >= N)
+		return true;
+
+	/* Consider this column and try placing
+	this queen in all rows one by one */
+	for (int i = 0; i < N; i++)
+	{
+		/* Check if queen can be placed on
+		board[i][col] */
+		if ( isSafe(i, col, slashCode,
+					backslashCode, rowLookup,
+		slashCodeLookup, backslashCodeLookup) )
+		{
+			/* Place this queen in board[i][col] */
+			board[i][col] = 1;
+			rowLookup[i] = true;
+			slashCodeLookup[slashCode[i][col]] = true;
+			backslashCodeLookup[backslashCode[i][col]] = true;
+
+			/* recur to place rest of the queens */
+			if ( solveNQueensUtil(board, col + 1,
+								slashCode, backslashCode,
+			rowLookup, slashCodeLookup, backslashCodeLookup) )
+				return true;
+
+			/* If placing queen in board[i][col]
+			doesn't lead to a solution, then backtrack */
+
+			/* Remove queen from board[i][col] */
+			board[i][col] = 0;
+			rowLookup[i] = false;
+			slashCodeLookup[slashCode[i][col]] = false;
+			backslashCodeLookup[backslashCode[i][col]] = false;
+		}
+	}
+
+	/* If queen can not be place in any row in
+		this column col then return false */
+	return false;
+}
+
+/* This function solves the N Queen problem using
+Branch and Bound. It mainly uses solveNQueensUtil() to
+solve the problem. It returns false if queens
+cannot be placed, otherwise return true and
+prints placement of queens in the form of 1s.
+Please note that there may be more than one
+solutions, this function prints one of the
+feasible solutions.*/
+bool solveNQueens()
+{
+	int board[N][N];
+	memset(board, 0, sizeof board);
+
+	// helper matrices
+	int slashCode[N][N];
+	int backslashCode[N][N];
+
+	// arrays to tell us which rows are occupied
+	bool rowLookup[N] = {false};
+
+	//keep two arrays to tell us
+	// which diagonals are occupied
+	bool slashCodeLookup[2*N - 1] = {false};
+	bool backslashCodeLookup[2*N - 1] = {false};
+
+	// initialize helper matrices
+	for (int r = 0; r < N; r++)
+		for (int c = 0; c < N; c++) {
+		slashCode[r][c] = r + c,
+			backslashCode[r][c] = r - c + 7;
+		}
+
+	if (solveNQueensUtil(board, 0,
+						slashCode, backslashCode,
+	rowLookup, slashCodeLookup, backslashCodeLookup) ==
+												false )
+	{
+		cout << "Solution does not exist";
+		return false;
+	}
+
+	// solution found
+	printSolution(board);
+	return true;
+}
+
+// Driver program to test above function
+int main()
+{
+	solveNQueens();
+
+	return 0;
+}
+
+
+
+_____________________________________
+
+
+# Assignment 04
+# N-Queens Problem
+
+
+#include <bits/stdc++.h>
+#define N 4
+using namespace std;
+ 
+/* A utility function to print solution */
+void printSolution(int board[N][N])
+{
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++)
+            cout << " " << board[i][j] << " ";
+        printf("\n");
+    }
+}
+ 
+/* A utility function to check if a queen can
+   be placed on board[row][col]. Note that this
+   function is called when "col" queens are
+   already placed in columns from 0 to col -1.
+   So we need to check only left side for
+   attacking queens */
+bool isSafe(int board[N][N], int row, int col)
+{
+    int i, j;
+ 
+    /* Check this row on left side */
+    for (i = 0; i < col; i++)
+        if (board[row][i])
+            return false;
+ 
+    /* Check upper diagonal on left side */
+    for (i = row, j = col; i >= 0 && j >= 0; i--, j--)
+        if (board[i][j])
+            return false;
+ 
+    /* Check lower diagonal on left side */
+    for (i = row, j = col; j >= 0 && i < N; i++, j--)
+        if (board[i][j])
+            return false;
+ 
+    return true;
+}
+ 
+/* A recursive utility function to solve N
+   Queen problem */
+bool solveNQUtil(int board[N][N], int col)
+{
+    /* base case: If all queens are placed
+      then return true */
+    if (col >= N)
+        return true;
+ 
+    /* Consider this column and try placing
+       this queen in all rows one by one */
+    for (int i = 0; i < N; i++) {
+        /* Check if the queen can be placed on
+          board[i][col] */
+        if (isSafe(board, i, col)) {
+            /* Place this queen in board[i][col] */
+            board[i][col] = 1;
+ 
+            /* recur to place rest of the queens */
+            if (solveNQUtil(board, col + 1))
+                return true;
+ 
+            /* If placing queen in board[i][col]
+               doesn't lead to a solution, then
+               remove queen from board[i][col] */
+            board[i][col] = 0; // BACKTRACK
+        }
+    }
+ 
+    /* If the queen cannot be placed in any row in
+        this column col  then return false */
+    return false;
+}
+ 
+/* This function solves the N Queen problem using
+   Backtracking. It mainly uses solveNQUtil() to
+   solve the problem. It returns false if queens
+   cannot be placed, otherwise, return true and
+   prints placement of queens in the form of 1s.
+   Please note that there may be more than one
+   solutions, this function prints one  of the
+   feasible solutions.*/
+bool solveNQ()
+{
+    int board[N][N] = { { 0, 0, 0, 0 },
+                        { 0, 0, 0, 0 },
+                        { 0, 0, 0, 0 },
+                        { 0, 0, 0, 0 } };
+ 
+    if (solveNQUtil(board, 0) == false) {
+        cout << "Solution does not exist";
+        return false;
+    }
+ 
+    printSolution(board);
+    return true;
+}
+ 
+// driver program to test above function
+int main()
+{
+    solveNQ();
+    return 0;
+}
+
+
+
+
+
+
+_____________________________________________________
+
+QUESTIONS = [
+    'Do you have cough?',
+    'Do you have a sore throat?',
+    'Do you have a fever?',
+    'Are you noticing any unexplained excessive sweating?',
+    'Do you have an itchy throat?',
+    'Do you have a runny nose?',
+    'Do you have a stuffy nose?',
+    'Do you have a headache?',
+    'Do you feel tired without actually exhausting yourself?'
+]
+
+
+THRESHOLD = {
+    'Mild': 30,
+    'Severe': 50,
+    'Extreme': 75
+}
+
+
+def expertSystem(questions, threshold):
+
+    score = 0
+
+    for question in questions:
+        print(question+" (Y/N) ")
+        ans = input("> ")
+        if ans.lower() == 'y':
+            print('On a scale of 1-10 how bad is it ?')
+            ip = input('> ')
+            while((not ip.isnumeric()) or int(ip) < 1 or int(ip) > 10):
+                print('Enter a valid input !')
+                ip = input('> ')
+            score += int(ip)
+
+    print()
+    print()
+
+    if score >= threshold['Extreme']:
+        print("You are showing symptoms of having EXTREME COVID-19")
+        print("Please call +91 8112233445 immediately to immediate assistance")
+        print("Based on your symptoms, You will need Immediate Hospitalization")
+
+    elif score >= threshold['Severe']:
+        print("Based on your answers You are showing Symptoms of SEVERE COVID-19")
+        print("You are advised to contact a COVID-19 Specialist ASAP")
+        print("You are prescribed with Favipriavir, Dolo 650 / Crocin 500, Paracetamol, Brufane")
+        print("Also coduct a COVID-19 Lab Test ASAP at your own convenience as this might be a false Positive")
+        print()
+        print()
+        print("Lab Testing: https://www.metropolisindia.com/parameter/pune/covid-19-rt-pcr-test")
+
+    elif score >= threshold['Mild']:
+        print("Based on your answers You are showing Symptoms of VERY MILD COVID-19")
+        print("Please Isolate yourself Immediately on a precautionary basis")
+        print("As this has a possibility of being a false positive , please consider testing yourself")
+        print("At home testing using Self-Testing kits is recommended , but you can get Lab Tests as well")
+        print()
+        print()
+        print("Self testing : https://www.flipkart.com/mylab-coviself-covid-19-rapid-antigen-test-kit/p/itm4d34ea09cad97")
+        print("Lab Testing  : https://www.metropolisindia.com/parameter/pune/covid-19-rt-pcr-test")
+
+    else:
+        print("You are Showing NO Symptoms of COVID-19")
+        print("This might be a false negative, If you feel unsure , please get Tested")
+        print("As this has a possibility of being a false negative , please consider testing yourself")
+        print("At home testing using Self-Testing kits is recommended")
+        print()
+        print()
+        print("Self testing : https://www.flipkart.com/mylab-coviself-covid-19-rapid-antigen-test-kit/p/itm4d34ea09cad97")
+
+    print()
+    print()
+    print("For any further queries visit : https://www.aarogyasetu.gov.in/")
+    print()
+    print()
+
+
+if '__main__' == __name__:
+
+    print("\n\n\t\tWelcome To The COVID-19 EXPERT SYSTEM\n")
+    print("\tNote : Please answer the following questions very honestly\n\n")
+    expertSystem(QUESTIONS, THRESHOLD)
+
+
+
+____________________________________________________________________________________________
+
+
+
+
+
+from tkinter import *
+root = Tk()
+root.title("Chatbot")
+
+
+def notify_responses():
+    global name, chatbot, responses, email
+    responses = {
+        'quit': {
+            'keyword': ['end', 'bye', 'quit', 'leave', 'exit'],
+            'response': "Visit us for detailed health evaluation " + name
+        },
+        'my_name': {
+            'keyword': ['my name', 'i am', 'my self'],
+            'response': f"Hi {name}, nice to meet you"
+        },
+        'your_name': {
+            'keyword': ['your name', 'who are you'],
+            'response': f"My name is {chatbot} and Please Enter your name and email"
+        },
+        'your_email': {
+            'keyword': ['my email', '@', '.com', 'number', 'whatsapp'],
+            'response': f"We have noted your details and will save it for the time you visit us."
+        },
+        'hello': {
+            'keyword': ['hi', 'hello', 'good morning', 'good evening', 'good afternoon', 'hola', 'namaste', 'pranam', 'namaskar', 'ram ram', 'jai hind'],
+            'response': "Hello " + name + ", what can I help you with?"
+        },
+        'treatments': {
+            'keyword': ['treatments', 'treatment', 'dental', 'optical', 'eye', 'chest', 'surgery', 'cancer', 'typhoid', 'dengue', 'malaria', 'diabetis', 'cholestrol', 'heart', 'kidney', 'cold', 'covid', 'corona', 'flu', 'cholera', 'chikenpox', 'depression', 'anxiety', 'pneumonia', 'tb'],
+            'response': f"We have this treatment available, you can book an appointment for it. "
+        },
+        'rates': {
+            'keyword': ['rates', 'charges', 'charge', 'rate', 'price', 'cost', 'money', 'payment'],
+            'response': f"For routine checkup we charge 100 Rs and for a full body checkup we cost 500 Rs."
+        },
+        'symptoms': {
+            'keyword': ['symptoms', 'cough', 'headache', 'fever', 'pain', 'sore', 'inflammation', 'acidity', 'temperature', 'stress', 'sneezing', 'vomiting'],
+            'response': f"We have noted your symptomes, when you visit us, we will send this information to doctor."
+        },
+        'medicines': {
+            'keyword': ['medicines', 'paracetamol', 'cetirizine', 'dolo', 'nise', 'numesulide', 'azithromcin', 'ibuprofen'],
+            'response': f'You can show the medicine slip to the medical store. He will help you out.'
+
+        },
+        'Quit': {
+            'keyword': ['Quit'],
+            'response': f'Please do visit us again and i hope you are satisfied'
+        }
+    }
+global query
+query = ""
+
+def set_query(x):
+    global query
+    query = x
+
+def keyword_find(keyword):
+    return any(x in query for x in responses[keyword]['keyword'])
+
+
+def get_response(keyword):
+    return responses[keyword]['response']
+
+
+def converse(query: str):
+    global name, chatbot, ticket, responses, email
+
+    if keyword_find('quit'):
+        res = get_response('quit')
+
+    elif keyword_find('my_name'):
+        name = query.split(' ')[-1].capitalize()
+        notify_responses()
+        res = get_response('my_name')
+    elif keyword_find('your_name'):
+        res = get_response('your_name')
+
+    elif keyword_find('your_email'):
+        res = get_response('your_email')
+
+    elif keyword_find('hello'):
+        res = get_response('hello')
+    elif keyword_find('treatments'):
+        res = get_response('treatments')
+    elif keyword_find('rates'):
+        res = get_response('rates')
+    elif keyword_find('symptoms'):
+        res = get_response('symptoms')
+    elif keyword_find('medicines'):
+        res = get_response('medicines')
+    elif keyword_find('Quit'):
+        res = get_response('Quit')
+    else:
+        res = "Sorry, we can not help you online.\nPlease do visit nearest A* hospital."
+    return res
+
+
+global name, chatbot, ticket, responses
+name = ''
+chatbot = 'Aliza'
+ticket = ''
+notify_responses()
+
+def func(query):
+    return converse(str(query))
+    # while not keyword_find('quit'):
+    #     print(converse(query))
+    #     print()
+    #     query = str(input('> ')).lower()
+    #     if query in ['quit', 'Quit', 'buy']:
+    #         print("Glad I could help you. Have a nice day! ")
+    #         break
+    
+
+# query = str(
+#     input('\nWelcome to A* Multispeciality Hospital.\n> ')).lower()
+# while not keyword_find('quit'):
+#     print(converse(query))
+#     print()
+#     query = str(input('> ')).lower()
+#     if query in ['quit', 'Quit', 'buy']:
+#         print("Glad I could help you. Have a nice day! ")
+#         break
+
+
+
+
+
+def send():
+    # query = str(
+    #     input('\nWelcome to A* Multispeciality Hospital.\n> ')).lower()
+    # while not keyword_find('quit'):
+    #     print(converse(query))
+    #     print()
+    #     query = str(input('> ')).lower()
+    #     if query in ['quit', 'Quit', 'buy']:
+    #         print("Glad I could help you. Have a nice day! ")
+    #         break
+    
+    
+    
+    # send = "You -> "+e.get()
+    # txt.insert(END, "n"+send)
+    # user = e.get().lower()
+    
+    # txt.insert(END, '\nWelcome to A* Multispeciality Hospital.\n> ')
+    a = e.get()
+    send = "You -> "+a
+    txt.insert(END, "\n"+send)
+    set_query(a)
+    txt.insert(END, "\nBot -> " + func(a))
+    
+    
+    # if(user == "hello"):
+    #     txt.insert(END, "n" + "Bot -> Hi")
+    # elif(user == "hi" or user == "hii" or user == "hiiii"):
+    #     txt.insert(END, "n" + "Bot -> Hello")
+    # elif(e.get() == "how are you"):
+    #     txt.insert(END, "n" + "Bot -> fine! and you")
+    # elif(user == "fine" or user == "i am good" or user == "i am doing good"):
+    #     txt.insert(END, "n" + "Bot -> Great! how can I help you.")
+    # else:
+    #     txt.insert(END, "n" + "Bot -> Sorry! I dind't got you")
+    # e.delete(0, END)
+
+
+
+txt = Text(root)
+txt.grid(row=0, column=0, columnspan=2)
+e = Entry(root, width=100)
+e.grid(row=1, column=0)
+send = Button(root, text="Send", command=send).grid(row=1, column=1)
+root.mainloop()
+
+
+
+
+___________________________________
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+void Board(char board[][7]){
+    cout << endl << "----------------------------------"<< endl << endl;
+    for(int i = 1; i <= 5; i++){
+        for(int j = 1; j <= 5; j++) cout << board[i][j] << "\t";
+        cout << endl << endl;
+    }
+}
+
+string sort(map<string, int>& M){
+    multimap<int, string> MM;
+    for (auto& it : M)  MM.insert(pair<int, string>(it.second, it.first));
+    for (auto& it : MM) return it.second;
+}
+
+int helper(int maze[][7]){
+    int xtemp=1, ytemp=1;
+    int h[7][7] =      {{-1,  -1,  -1,  -1,  -1,  -1,  -1}, 
+                        {-1,   0,  -1,   0,   0,   0,  -1}, 
+                        {-1,   0,   0,   0,  -1,   0,  -1}, 
+                        {-1,  -1,  -1,  -1,  -1,   0,  -1}, 
+                        {-1,   0,   0,   0,   0,   0,  -1}, 
+                        {-1,   0,   0,   0,   0,   0,  -1}, 
+                        {-1,  -1,  -1,  -1,  -1,  -1,  -1}};
+    char board[7][7] = {{'1', '1', '1', '1', '1', '1', '1'}, 
+                        {'1', 'S', '1', '0', '0', '0', '1'}, 
+                        {'1', '0', '0', '0', '1', '0', '1'}, 
+                        {'1', '1', '1', '1', '1', '0', '1'}, 
+                        {'1', '0', '0', '0', '0', '0', '1'}, 
+                        {'1', '0', '0', '0', '0', 'E', '1'}, 
+                        {'1', '1', '1', '1', '1', '1', '1'}};
+    for(int i = 1; i <= 5; i++){
+        for(int j = 1; j <= 5; j++){
+            if(h[i][j] != -1) h[i][j] = 10-i-j;
+        }
+    }
+    Board(board);
+    int Count = 0;
+    while(true){
+        if(xtemp == 5 && ytemp == 5)    break;
+        int above, below, left, right;
+        bool aboveFlag = false, belowFlag = false, leftFlag = false, rightFlag = false;
+        if(h[xtemp][ytemp-1] != -1){ 
+            above = Count + h[xtemp][ytemp]; 
+            aboveFlag = true; 
+        }
+        if(h[xtemp][ytemp+1] != -1){ below = Count + h[xtemp][ytemp+1]; belowFlag = true; }
+        if(h[xtemp-1][ytemp] != -1){ left = Count + h[xtemp-1][ytemp]; leftFlag = true; }
+        if(h[xtemp+1][ytemp] != -1){ right = Count + h[xtemp+1][ytemp]; rightFlag = true; }
+        map<string, int> dict;
+        if(aboveFlag)   dict["above"] = above;
+        if(belowFlag)   dict["below"] = below;
+        if(leftFlag)    dict["left"] = left;
+        if(rightFlag)   dict["right"] = right;
+        if(dict.empty()){ Board(board); cout << "No way found..."; return Count;}
+        string where = sort(dict);
+        if(where == "above"){ Count++; h[xtemp][ytemp] = -1; board[xtemp][ytemp] = '<'; ytemp--; }
+        else if(where == "below"){ Count++; h[xtemp][ytemp] = -1; board[xtemp][ytemp] = '>'; ytemp++; }
+        else if(where == "left"){ Count++; h[xtemp][ytemp] = -1; board[xtemp][ytemp] = '^'; xtemp--; }
+        else if(where == "right"){ Count++; h[xtemp][ytemp] = -1; board[xtemp][ytemp] = 'v'; xtemp++; }
+    }
+    Board(board);
+    return Count;
+}
+
+int main(){
+    int maze[7][7];
+    int Steps = helper(maze);
+    cout << "Number of steps taken = " << Steps;
+    return 0;
+}
+
+
+
+______________________________________________________
+
+
+
+// A C++ Program to implement A* Search Algorithm
+#include "math.h"
+#include <array>
+#include <chrono>
+#include <cstring>
+#include <iostream>
+#include <queue>
+#include <set>
+#include <stack>
+#include <tuple>
+using namespace std;
+
+// Creating a shortcut for int, int pair type
+typedef pair<int, int> Pair;
+// Creating a shortcut for tuple<int, int, int> type
+typedef tuple<double, int, int> Tuple;
+
+// A structure to hold the necessary parameters
+struct cell {
+	// Row and Column index of its parent
+	Pair parent;
+	// f = g + h
+	double f, g, h;
+	cell()
+		: parent(-1, -1)
+		, f(-1)
+		, g(-1)
+		, h(-1)
+	{
+	}
+};
+
+// A Utility Function to check whether given cell (row, col)
+// is a valid cell or not.
+template <size_t ROW, size_t COL>
+bool isValid(const array<array<int, COL>, ROW>& grid,
+			const Pair& point)
+{ // Returns true if row number and column number is in
+// range
+	if (ROW > 0 && COL > 0)
+		return (point.first >= 0) && (point.first < ROW)
+			&& (point.second >= 0)
+			&& (point.second < COL);
+
+	return false;
+}
+
+// A Utility Function to check whether the given cell is
+// blocked or not
+template <size_t ROW, size_t COL>
+bool isUnBlocked(const array<array<int, COL>, ROW>& grid,
+				const Pair& point)
+{
+	// Returns true if the cell is not blocked else false
+	return isValid(grid, point)
+		&& grid[point.first][point.second] == 1;
+}
+
+// A Utility Function to check whether destination cell has
+// been reached or not
+bool isDestination(const Pair& position, const Pair& dest)
+{
+	return position == dest;
+}
+
+// A Utility Function to calculate the 'h' heuristics.
+double calculateHValue(const Pair& src, const Pair& dest)
+{
+	// h is estimated with the two points distance formula
+	return sqrt(pow((src.first - dest.first), 2.0)
+				+ pow((src.second - dest.second), 2.0));
+}
+
+// A Utility Function to trace the path from the source to
+// destination
+template <size_t ROW, size_t COL>
+void tracePath(
+	const array<array<cell, COL>, ROW>& cellDetails,
+	const Pair& dest)
+{
+	printf("\nThe Path is ");
+
+	stack<Pair> Path;
+
+	int row = dest.second;
+	int col = dest.second;
+	Pair next_node = cellDetails[row][col].parent;
+	do {
+		Path.push(next_node);
+		next_node = cellDetails[row][col].parent;
+		row = next_node.first;
+		col = next_node.second;
+	} while (cellDetails[row][col].parent != next_node);
+
+	Path.emplace(row, col);
+	while (!Path.empty()) {
+		Pair p = Path.top();
+		Path.pop();
+		printf("-> (%d,%d) ", p.first, p.second);
+	}
+}
+
+// A Function to find the shortest path between a given
+// source cell to a destination cell according to A* Search
+// Algorithm
+template <size_t ROW, size_t COL>
+void aStarSearch(const array<array<int, COL>, ROW>& grid,
+				const Pair& src, const Pair& dest)
+{
+	// If the source is out of range
+	if (!isValid(grid, src)) {
+		printf("Source is invalid\n");
+		return;
+	}
+
+	// If the destination is out of range
+	if (!isValid(grid, dest)) {
+		printf("Destination is invalid\n");
+		return;
+	}
+
+	// Either the source or the destination is blocked
+	if (!isUnBlocked(grid, src)
+		|| !isUnBlocked(grid, dest)) {
+		printf("Source or the destination is blocked\n");
+		return;
+	}
+
+	// If the destination cell is the same as source cell
+	if (isDestination(src, dest)) {
+		printf("We are already at the destination\n");
+		return;
+	}
+
+	// Create a closed list and initialise it to false which
+	// means that no cell has been included yet This closed
+	// list is implemented as a boolean 2D array
+	bool closedList[ROW][COL];
+	memset(closedList, false, sizeof(closedList));
+
+	// Declare a 2D array of structure to hold the details
+	// of that cell
+	array<array<cell, COL>, ROW> cellDetails;
+
+	int i, j;
+	// Initialising the parameters of the starting node
+	i = src.first, j = src.second;
+	cellDetails[i][j].f = 0.0;
+	cellDetails[i][j].g = 0.0;
+	cellDetails[i][j].h = 0.0;
+	cellDetails[i][j].parent = { i, j };
+
+	/*
+	Create an open list having information as-
+	<f, <i, j>>
+	where f = g + h,
+	and i, j are the row and column index of that cell
+	Note that 0 <= i <= ROW-1 & 0 <= j <= COL-1
+	This open list is implemented as a set of tuple.*/
+	std::priority_queue<Tuple, std::vector<Tuple>,
+						std::greater<Tuple> >
+		openList;
+
+	// Put the starting cell on the open list and set its
+	// 'f' as 0
+	openList.emplace(0.0, i, j);
+
+	// We set this boolean value as false as initially
+	// the destination is not reached.
+	while (!openList.empty()) {
+		const Tuple& p = openList.top();
+		// Add this vertex to the closed list
+		i = get<1>(p); // second element of tuple
+		j = get<2>(p); // third element of tuple
+
+		// Remove this vertex from the open list
+		openList.pop();
+		closedList[i][j] = true;
+		/*
+				Generating all the 8 successor of this cell
+						N.W N N.E
+						\ | /
+						\ | /
+						W----Cell----E
+								/ | \
+						/ | \
+						S.W S S.E
+
+				Cell-->Popped Cell (i, j)
+				N --> North	 (i-1, j)
+				S --> South	 (i+1, j)
+				E --> East	 (i, j+1)
+				W --> West		 (i, j-1)
+				N.E--> North-East (i-1, j+1)
+				N.W--> North-West (i-1, j-1)
+				S.E--> South-East (i+1, j+1)
+				S.W--> South-West (i+1, j-1)
+		*/
+		for (int add_x = -1; add_x <= 1; add_x++) {
+			for (int add_y = -1; add_y <= 1; add_y++) {
+				Pair neighbour(i + add_x, j + add_y);
+				// Only process this cell if this is a valid
+				// one
+				if (isValid(grid, neighbour)) {
+					// If the destination cell is the same
+					// as the current successor
+					if (isDestination(
+							neighbour,
+							dest)) { // Set the Parent of
+									// the destination cell
+						cellDetails[neighbour.first]
+								[neighbour.second]
+									.parent
+							= { i, j };
+						printf("The destination cell is "
+							"found\n");
+						tracePath(cellDetails, dest);
+						return;
+					}
+					// If the successor is already on the
+					// closed list or if it is blocked, then
+					// ignore it. Else do the following
+					else if (!closedList[neighbour.first]
+										[neighbour.second]
+							&& isUnBlocked(grid,
+											neighbour)) {
+						double gNew, hNew, fNew;
+						gNew = cellDetails[i][j].g + 1.0;
+						hNew = calculateHValue(neighbour,
+											dest);
+						fNew = gNew + hNew;
+
+						// If it isn’t on the open list, add
+						// it to the open list. Make the
+						// current square the parent of this
+						// square. Record the f, g, and h
+						// costs of the square cell
+						//			 OR
+						// If it is on the open list
+						// already, check to see if this
+						// path to that square is better,
+						// using 'f' cost as the measure.
+						if (cellDetails[neighbour.first]
+									[neighbour.second]
+										.f
+								== -1
+							|| cellDetails[neighbour.first]
+										[neighbour.second]
+											.f
+								> fNew) {
+							openList.emplace(
+								fNew, neighbour.first,
+								neighbour.second);
+
+							// Update the details of this
+							// cell
+							cellDetails[neighbour.first]
+									[neighbour.second]
+										.g
+								= gNew;
+							cellDetails[neighbour.first]
+									[neighbour.second]
+										.h
+								= hNew;
+							cellDetails[neighbour.first]
+									[neighbour.second]
+										.f
+								= fNew;
+							cellDetails[neighbour.first]
+									[neighbour.second]
+										.parent
+								= { i, j };
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// When the destination cell is not found and the open
+	// list is empty, then we conclude that we failed to
+	// reach the destination cell. This may happen when the
+	// there is no way to destination cell (due to
+	// blockages)
+	printf("Failed to find the Destination Cell\n");
+}
+
+// Driver program to test above function
+int main()
+{
+	/* Description of the Grid-
+	1--> The cell is not blocked
+	0--> The cell is blocked */
+	array<array<int, 10>, 9> grid{
+		{ { { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 } },
+		{ { 1, 1, 1, 0, 1, 1, 1, 0, 1, 1 } },
+		{ { 1, 1, 1, 0, 1, 1, 0, 1, 0, 1 } },
+		{ { 0, 0, 1, 0, 1, 0, 0, 0, 0, 1 } },
+		{ { 1, 1, 1, 0, 1, 1, 1, 0, 1, 0 } },
+		{ { 1, 0, 1, 1, 1, 1, 0, 1, 0, 0 } },
+		{ { 1, 0, 0, 0, 0, 1, 0, 0, 0, 1 } },
+		{ { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 } },
+		{ { 1, 1, 1, 0, 0, 0, 1, 0, 0, 1 } } }
+	};
+
+	// Source is the left-most bottom-most corner
+	Pair src(8, 0);
+
+	// Destination is the left-most top-most corner
+	Pair dest(0, 0);
+
+	aStarSearch(grid, src, dest);
+
+	return 0;
+}
+
+
+///6666666666666666666666666666666666666666666666666666666666666666666666666666
+QUESTIONS = [
+    'Do you have cough?',
+    'Do you have a sore throat?',
+    'Do you have a fever?',
+    'Are you noticing any unexplained excessive sweating?',
+    'Do you have an itchy throat?',
+    'Do you have a runny nose?',
+    'Do you have a stuffy nose?',
+    'Do you have a headache?',
+    'Do you feel tired without actually exhausting yourself?'
+]
+
+
+THRESHOLD = {
+    'Mild': 30,
+    'Severe': 50,
+    'Extreme': 75
+}
+
+
+def expertSystem(questions, threshold):
+
+    score = 0
+
+    for question in questions:
+        print(question+" (Y/N) ")
+        ans = input("> ")
+        if ans.lower() == 'y':
+            print('On a scale of 1-10 how bad is it ?')
+            ip = input('> ')
+            while((not ip.isnumeric()) or int(ip) < 1 or int(ip) > 10):
+                print('Enter a valid input !')
+                ip = input('> ')
+            score += int(ip)
+
+    print()
+    print()
+
+    if score >= threshold['Extreme']:
+        print("You are showing symptoms of having EXTREME COVID-19")
+        print("Please call +91 8112233445 immediately to immediate assistance")
+        print("Based on your symptoms, You will need Immediate Hospitalization")
+
+    elif score >= threshold['Severe']:
+        print("Based on your answers You are showing Symptoms of SEVERE COVID-19")
+        print("You are advised to contact a COVID-19 Specialist ASAP")
+        print("You are prescribed with Favipriavir, Dolo 650 / Crocin 500, Paracetamol, Brufane")
+        print("Also coduct a COVID-19 Lab Test ASAP at your own convenience as this might be a false Positive")
+        print()
+        print()
+        print("Lab Testing: https://www.metropolisindia.com/parameter/pune/covid-19-rt-pcr-test")
+
+    elif score >= threshold['Mild']:
+        print("Based on your answers You are showing Symptoms of VERY MILD COVID-19")
+        print("Please Isolate yourself Immediately on a precautionary basis")
+        print("As this has a possibility of being a false positive , please consider testing yourself")
+        print("At home testing using Self-Testing kits is recommended , but you can get Lab Tests as well")
+        print()
+        print()
+        print("Self testing : https://www.flipkart.com/mylab-coviself-covid-19-rapid-antigen-test-kit/p/itm4d34ea09cad97")
+        print("Lab Testing  : https://www.metropolisindia.com/parameter/pune/covid-19-rt-pcr-test")
+
+    else:
+        print("You are Showing NO Symptoms of COVID-19")
+        print("This might be a false negative, If you feel unsure , please get Tested")
+        print("As this has a possibility of being a false negative , please consider testing yourself")
+        print("At home testing using Self-Testing kits is recommended")
+        print()
+        print()
+        print("Self testing : https://www.flipkart.com/mylab-coviself-covid-19-rapid-antigen-test-kit/p/itm4d34ea09cad97")
+
+    print()
+    print()
+    print("For any further queries visit : https://www.aarogyasetu.gov.in/")
+    print()
+    print()
+
+
+if '__main__' == __name__:
+
+    print("\n\n\t\tWelcome To The COVID-19 EXPERT SYSTEM\n")
+    print("\tNote : Please answer the following questions very honestly\n\n")
+    expertSystem(QUESTIONS, THRESHOLD)

@@ -3,11 +3,11 @@
 
 using namespace std;
 
-vector<vector<int> > result;
+vector<vector<int>> result;
 // Program to solve N Queens problem
-void solveBoard(vector<vector<char> >& board, int row,
+void solveBoard(vector<vector<char>> &board, int row,
 				int rowmask, int ldmask, int rdmask,
-				int& ways)
+				int &ways)
 {
 
 	int n = board.size();
@@ -18,11 +18,14 @@ void solveBoard(vector<vector<char> >& board, int row,
 	// If rowmask will have all bits set, means queen has
 	// been placed successfully in all rows and board is
 	// displayed
-	if (rowmask == all_rows_filled) {
+	if (rowmask == all_rows_filled)
+	{
 
 		vector<int> v;
-		for (int i = 0; i < board.size(); i++) {
-			for (int j = 0; j < board.size(); j++) {
+		for (int i = 0; i < board.size(); i++)
+		{
+			for (int j = 0; j < board.size(); j++)
+			{
 				if (board[i][j] == 'Q')
 					v.push_back(j + 1);
 			}
@@ -35,9 +38,9 @@ void solveBoard(vector<vector<char> >& board, int row,
 	// ldmask and rdmask. all set bits of 'safe'
 	// indicates the safe column index for queen
 	// placement of this iteration for row index(row).
-	int safe
-		= all_rows_filled & (~(rowmask | ldmask | rdmask));
-	while (safe) {
+	int safe = all_rows_filled & (~(rowmask | ldmask | rdmask));
+	while (safe)
+	{
 
 		// Extracts the right-most set bit
 		// (safe column index) where queen
@@ -77,8 +80,8 @@ void solveBoard(vector<vector<char> >& board, int row,
 		// these bit masks will keep updated in each
 		// iteration for next row
 		solveBoard(board, row + 1, rowmask | p,
-				(ldmask | p) << 1, (rdmask | p) >> 1,
-				ways);
+				   (ldmask | p) << 1, (rdmask | p) >> 1,
+				   ways);
 
 		// Reset right-most set bit to 0 so,
 		// next iteration will continue by placing the queen
@@ -98,10 +101,12 @@ int main()
 	int n = 4;
 	int ways = 0;
 
-	vector<vector<char> > board;
-	for (int i = 0; i < n; i++) {
+	vector<vector<char>> board;
+	for (int i = 0; i < n; i++)
+	{
 		vector<char> tmp;
-		for (int j = 0; j < n; j++) {
+		for (int j = 0; j < n; j++)
+		{
 			tmp.push_back(' ');
 		}
 		board.push_back(tmp);
@@ -113,8 +118,9 @@ int main()
 	// Function Call
 	result.clear();
 	solveBoard(board, row, rowmask, ldmask, rdmask, ways);
-	sort(result.begin(),result.end());
-	for (auto ar : result) {
+	sort(result.begin(), result.end());
+	for (auto ar : result)
+	{
 		cout << "[";
 		for (auto it : ar)
 			cout << it << " ";
